@@ -58,6 +58,7 @@ from .const import (
     I_SN,
     B_CAPACITY,
     B_CURRENT,
+    B_VOLTAGE,
     B_POWER,
     B_DIRECTION,
     G_POWER,
@@ -74,6 +75,9 @@ from .const import (
     B_DIR_DIS,
     B_DIR_CH,
     P_UNKNOWN,
+    B_BUYELEC,
+    B_SELLELEC,
+    B_BATSTAT,
     B_EXPORT,
     B_IMPORT,
     P_TODAY_ALARM_NUM,
@@ -250,7 +254,7 @@ async def async_setup_entry(
                 for device_sn in plant["deviceSnList"]:
                     for device in plant["devices"]:
                         if device["deviceSn"] == device_sn:
-                            if ("hasBattery" in device and device["hasBattery"] == 1) or "hasBattery" not in device:
+                            if ("hasBattery" in device and device["hasBattery"] == 0) or "hasBattery" not in device:
                                 _LOGGER.debug(
                                     "Setting up ESolarInverterBatterySoC sensor for %s and device %s.",
                                     plant["plantName"],
@@ -1800,6 +1804,7 @@ class ESolarInverterBatterySoC(ESolarSensor):
             I_SN: None,
             B_CAPACITY: None,
             B_CURRENT: None,
+            B_VOLTAGE: None,
             B_POWER: None,
             B_DIRECTION: None,
             G_POWER: None,
@@ -1811,6 +1816,9 @@ class ESolarInverterBatterySoC(ESolarSensor):
             B_T_LOAD: None,
             B_H_LOAD: None,
             B_B_LOAD: None,
+            B_BUYELEC: None,
+            B_SELLELEC:None,
+            B_BATSTAT:None,
             S_POWER: None,
         }
 
@@ -1849,6 +1857,11 @@ class ESolarInverterBatterySoC(ESolarSensor):
 
                     # Setup dynamic attributes
                     self._attr_extra_state_attributes[B_CURRENT] = kit["deviceStatisticsData"]["batCurrent"]
+                    self._attr_extra_state_attributes[B_VOLTAGE] = kit["deviceStatisticsData"]["batVoltage"]
+                    self._attr_extra_state_attributes[B_BATSTAT] = kit["deviceStatisticsData"]["batStatusName"]
+                  #  self._attr_extra_state_attributes[B_SELLELEC] = kit["raw"]["todaySellEnergy"]
+                    self._attr_extra_state_attributes[B_SELLELEC] = kit["deviceStatisticsData"]["todayBatDisEnergy"]
+                    self._attr_extra_state_attributes[B_BUYELEC] = kit["deviceStatisticsData"]["todayBatChgEnergy"]
                     self._attr_extra_state_attributes[B_POWER] = kit["deviceStatisticsData"]["batPower"]
                     self._attr_extra_state_attributes[B_T_LOAD] = kit["deviceStatisticsData"]["totalLoadPowerwatt"]
                     # self._attr_extra_state_attributes[B_H_LOAD] = plant["homeLoadPower"] # ???
@@ -1859,10 +1872,16 @@ class ESolarInverterBatterySoC(ESolarSensor):
                     else:
                         self._attr_extra_state_attributes[B_B_LOAD] = None
 
-
+    ## afegits jordi
+                 #   self._attr_extra_state_attributes[B_SELLELEC] = kit["deviceStatisticsData"]["todayBatChgEnergy"]
+              
+                 #   self._attr_extra_state_attributes[B_BATSTAT] = kit["deviceStatisticsData"]["batStatusName"]
+                 #   self._attr_extra_state_attributes[B_SELLELEC] = kit["raw"]["todaySellEnergy"]
+    
+    
             if plant["batteryDirection"] == 0:
                 self._attr_extra_state_attributes[B_DIRECTION] = B_DIR_STB
-            elif plant["batteryDirection"] == 1:
+            elif plent["batteryDirection"] == 1:
                 self._attr_extra_state_attributes[B_DIRECTION] = B_DIR_DIS
             elif plant["batteryDirection"] == -1:
                 self._attr_extra_state_attributes[B_DIRECTION] = B_DIR_CH
