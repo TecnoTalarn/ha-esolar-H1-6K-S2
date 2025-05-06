@@ -94,9 +94,11 @@ I_HISTORY = "History"
 B_DIR_CH = "Charging"
 B_DIR_DIS = "Discharging"
 B_DIR_STB = "Standby"
+B_BATSTAT = "ESTAT BATERIA"
 
 B_CAPACITY = "Battery Capacity"
 B_CURRENT = "Battery Current"
+B_VOLTAGE = "Battery Voltage"
 B_POWER = "Battery Power"
 
 B_GRID_DIRECT = "Grid Direction"
