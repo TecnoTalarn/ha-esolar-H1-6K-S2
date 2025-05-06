@@ -1,3 +1,18 @@
+Hello, I made a fork of the project in order to help identify the sensors
+
+The original code did not detect my Battery, and I saw that the info it retrieves from SAJ indicates that I have a type 0 inverter, and the code seeing this no longer looks for the battery.
+
+if ("hasBattery" in device and device["hasBattery"] == 1) or "hasBattery" not in device:
+
+where I changed the 1 to 0.
+
+From here I have been modifying it in order to collect the info from the different sensors that interested me.
+
+I am missing the info on the energy that we send to the grid and the one that we collect, and I have not been able to see the items where this information is. If anyone knows, and wants to tell me... thanks.
+
+More info on my fork.
+This was made by someone who has only programmed in BASIC, when the commodore64 was the king of the party. Forgive my clumsiness.
+
 # Home Assistant SAJ eSolar _Elekeeper_ Custom Integration
 
 ![elekeeper](https://github.com/erelke/ha-esolar/blob/main/images/elekeeper.png)
