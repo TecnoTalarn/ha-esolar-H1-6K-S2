@@ -1,0 +1,58 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+recorder:
+  purge_keep_days: 90
+
+
+# Example configuration.yaml entry
+
+#esolar air 
+template:
+  - sensor:
+      - name: "Potencia Bateria"
+        unique_id: Potencia_bateria
+        state: >
+          {{state_attr('sensor.inverter_h1s2602j2203e01135_battery_state_of_charge', 'Battery Power')}}
+  - sensor:
+      - name: "Voltatge Bateria"
+        unique_id: Voltatge_bateria
+        state: >
+          {{state_attr('sensor.inverter_h1s2602j2203e01135_battery_state_of_charge', 'Battery Voltage') }}
+  - sensor:
+      - name: "Battery Direction"
+        unique_id: Battery_Direction
+        state: >
+          {{state_attr('sensor.inverter_h1s2602j2203e01135_battery_state_of_charge', 'ESTAT BATERIA') }}
+  - sensor:
+      - name: "Total Load Power"
+        unique_id: Total_Load_Power
+        state: >
+          {{state_attr('sensor.inverter_h1s2602j2203e01135_battery_state_of_charge', 'Total Load Power') }} 
+  - sensor:
+      - name: "Battery Buy Energy"
+        unique_id: Battery_Buy_Energy
+        state: >
+          {{state_attr('sensor.inverter_h1s2602j2203e01135_battery_state_of_charge', 'Battery Buy Energy') }}
+  - sensor:
+      - name: "Battery Sell Energy"
+        unique_id: Battery_Sell_Energy
+        state: >
+          {{state_attr('sensor.inverter_h1s2602j2203e01135_battery_state_of_charge', 'Battery Sell Energy') }}         
+        
+      
+        
+
+        
+
+
+frontend:
+  themes: !include_dir_merge_named themes
