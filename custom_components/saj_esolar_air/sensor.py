@@ -77,6 +77,7 @@ from .const import (
     P_UNKNOWN,
     B_BUYELEC,
     B_SELLELEC,
+    B_GRIDENERGY,
     B_BATSTAT,
     B_EXPORT,
     B_IMPORT,
@@ -167,7 +168,7 @@ async def async_setup_entry(
                     ESolarSensorPlantTodayEquivalentHours( coordinator, plant["plantName"], plant["plantUid"] )
                 )
 
-            if plant["type"] in [1,2,3] and (("hasBattery" in plant and plant["hasBattery"] == 1) or "hasBattery" not in plant):
+            if plant["type"] in [0,1,2,3] and (("hasBattery" in plant and plant["hasBattery"] == 0) or "hasBattery" not in plant):
                 sources = ["todayBuyEnergy", "todayChargeEnergy", "todayDisChargeEnergy", "todayLoadEnergy", "todaySellEnergy",
                            "totalBuyEnergy", "totalChargeEnergy", "totalDisChargeEnergy", "totalLoadEnergy", "totalSellEnergy",
                            "yearBuyEnergy", "yearBatChgEnergy", "yearBatDischgEnergy", "yearLoadEnergy", "yearSellEnergy",
@@ -250,7 +251,7 @@ async def async_setup_entry(
                         ESolarSensorInverterPeakPower( coordinator, plant["plantName"], plant["plantUid"], device)
                     )
                     
-            if use_inverter_sensors and plant["type"] in [1,2,3] :
+            if use_inverter_sensors and plant["type"] in [0,1,2,3] :
                 for device_sn in plant["deviceSnList"]:
                     for device in plant["devices"]:
                         if device["deviceSn"] == device_sn:
@@ -1820,6 +1821,7 @@ class ESolarInverterBatterySoC(ESolarSensor):
             B_SELLELEC:None,
             B_BATSTAT:None,
             S_POWER: None,
+            B_GRIDENERGY: None,
         }
 
     async def async_update(self) -> None:
@@ -1859,7 +1861,7 @@ class ESolarInverterBatterySoC(ESolarSensor):
                     self._attr_extra_state_attributes[B_CURRENT] = kit["deviceStatisticsData"]["batCurrent"]
                     self._attr_extra_state_attributes[B_VOLTAGE] = kit["deviceStatisticsData"]["batVoltage"]
                     self._attr_extra_state_attributes[B_BATSTAT] = kit["deviceStatisticsData"]["batStatusName"]
-                  #  self._attr_extra_state_attributes[B_SELLELEC] = kit["raw"]["todaySellEnergy"]
+                   # self._attr_extra_state_attributes[B_GRIDENERGY] = kit["raw"]["todayBuyEnergy"]
                     self._attr_extra_state_attributes[B_SELLELEC] = kit["deviceStatisticsData"]["todayBatDisEnergy"]
                     self._attr_extra_state_attributes[B_BUYELEC] = kit["deviceStatisticsData"]["todayBatChgEnergy"]
                     self._attr_extra_state_attributes[B_POWER] = kit["deviceStatisticsData"]["batPower"]

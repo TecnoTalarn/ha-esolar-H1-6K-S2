@@ -82,6 +82,7 @@ B_BACKUP_POWER_W = "Backup Power (W)"
 B_ON_G_VOLT = "On Grid Voltage"
 B_ON_G_FREQ = "On Grid Frequency"
 B_ON_G_POWER_W = "On Grid Output Power (W)"
+B_GRIDENERGY = "Grid Energy kWh"
 
 # Inverter status
 I_NORMAL = "Normal"
